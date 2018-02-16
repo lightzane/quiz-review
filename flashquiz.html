@@ -1,0 +1,557 @@
+<html>
+	<head>
+		<title>Flash Quiz v1.0</title>
+		<style>
+			body {font-family: Segoe UI Light, Segoe UI, Tahoma, Verdana, Arial, sans-serif; margin: 0;-webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;}
+			h1 {font-weight: normal; margin-top: 0;}
+			#container {margin: 3% 200px;}
+			
+			#flash-card-container
+			{
+				margin: 50px;
+				margin-bottom: 0;
+			}
+			
+			#flash-card 
+			{
+				background: #fff;
+				margin: 0 auto; 
+				width: 600px;
+				min-height: 200px;
+				border: 1px solid #aaa;
+				box-shadow: 0px 0px 10px #eee;
+				-webkit-box-shadow: 0px 0px 10px #eee;
+				-moz-box-shadow: 0px 0px 10px #eee;
+				-ms-box-shadow: 0px 0px 10px #eee;
+				-o-box-shadow: 0px 0px 10px #eee;
+				padding: 40px;
+				
+				
+				text-align: center;
+				position: relative;
+			}
+			
+			#flash-card h1
+			{
+				font-size: 50px;
+			}
+			
+			#flash-card #_2714
+			{
+				color: green;
+				width: 0;
+				overflow: hidden;
+				position: absolute;
+				text-align: left;
+				margin-left: 20px;
+				
+				transition: 1s;
+				-webkit-transition: 0.5s;
+				-moz-transition: 0.5s;
+				-ms-transition: 0.5s;
+				-o-transition: 0.5s;
+			}
+			
+			#flash-card p
+			{
+				font-size: 150%;
+			}
+			
+			#answer-container
+			{
+				text-align: center;
+			}
+			
+			#answer-container a
+			{
+				color: #fff;
+				text-decoration: none;
+				font-size: 20px;
+				background: #ade2ff;
+				border: 1px solid #55aaff;
+				
+				box-shadow: 0px 2px 2px #ddd, 0px 2px 2px #fff inset;
+				-webkit-box-shadow: 0px 2px 2px #ddd, 0px 2px 2px #fff inset;
+				-moz-box-shadow: 0px 2px 2px #ddd, 0px 2px 2px #fff inset;
+				-ms-box-shadow: 0px 2px 2px #ddd, 0px 2px 2px #fff inset;
+				-o-box-shadow: 0px 2px 2px #ddd, 0px 2px 2px #fff inset;
+				
+				padding: 10px 20px;
+				font-family: Segoe UI;
+				
+			}
+			
+			#answer-container a:active
+			{
+				box-shadow: 0px 2px #ccc inset;
+			}
+			
+			
+			#answer-container input[type=text] 
+			{
+				font-family: Segoe UI; 
+				font-size: 16px;
+				padding: 7px 14px;
+				outline-color: #ade2ff; 
+				text-align: center;
+				margin-top: 5%;
+			}
+			
+			#overlay 
+			{
+				background: #000;
+				position: fixed;
+				width: 100%;
+				height: 100%;
+				top:0; left:0; right: 0; bottom: 0;
+				z-index: 999;
+				
+				transition: 1s;
+				-webkit-transition: 1s;
+				-moz-transition: 1s;
+				-ms-transition: 1s;
+				-o-transition: 1s;
+			}
+			
+			#overlay-content
+			{
+				color: white;
+				width: 400px;
+				height: 200px;
+				position: fixed;
+				margin: auto;
+				top: 0; left: 0; right: 0; bottom: 0;
+				font-size: 30px;
+				text-align: center;
+			}
+			
+			
+			#hint {margin: 30px; text-align: center; color: green; font-size: 15px; transition:1s; -webkit-transition: 1s; -moz-transition: 1s; -ms-transition: 1s; -o-transition: 1s;}
+			#hint span{color: red; font-weight: bold;}
+			
+			
+		</style>
+	</head>
+	<body>
+	
+	<div id="container">
+	
+		<div id="flash-card-container">
+		
+			<!-- div: flash-card -->
+			<div id="flash-card">
+			<!-- &#9786; -->
+				<h1>Term will be displayed here<span id="_2714">&#x2714;</span></h1>
+				<p>And then, the definition of that term would be displayed here.</p>
+			
+			</div> <!-- /div: flash-card -->
+			
+			
+		</div> <!-- /div: flash-card-container -->
+		
+		<!-- div: answer-container -->
+		<div id="answer-container">
+			
+			<!-- <p id="hint" ><span>Review!</span> Use left and right arrow keys to move between flash cards.</p> -->
+			<!-- <a href="javascript:void(0);" id="startQuiz">Start Quiz</a> <br> -->
+			<!-- <input id="key" type="text" autofocus/> -->
+			
+		</div> <!-- /div: answer-container -->
+		
+	</div> <!-- /container -->
+	<!--
+	<div id="overlay">
+		<div id="overlay-content">Sorry</div>
+	</div> -->
+	
+	
+	<script>
+		/*
+		*
+		************************************************************************
+		*	Title--: Flash Cards / Questions
+		*	Author-: JP Aguilar
+		*	Created: 8th October 2013
+		*	Version: 1.01
+		************************************************************************
+		*	Purpose: To aid people study when reviewing in terms of 'identification' tests...
+		*/
+	</script>
+	
+	<script>
+		
+		var waitingForYourAnswer = true;
+		// YOU CHEATER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		// You have lost your honor by looking at this
+		
+		//an array of question
+		var questions = new Array
+		(
+			//katuturan at katangian ng wika
+			["Henry Gleason","Ayon kay _____, \"ang wika ay isang masistemang balangkas ng sinasalitang tunog na pinili inaayos sa paraang arbitraryo upang magamit sa komunikasyon ng mga taong nabibilang sa isang kultura.\""],
+			["Masistemang Balangkas","(katuturan at katangian ng wika) ang wika ay may balangkas ng tunog at kahulugan. Ang wika ay may tiyak na dami ng tunog na nagsama-sama sa isang sistematikong paraan upang bumuo ng makabuluhang yunit gaya ng salita. Ang mga salita naman kapag pinagsama-sama ay makabubuo ng mga parirala at pangungusap. Sa pagsasama-sama ng mga pangungusap at nakabubuo ng mga pahayag."],
+			["Sinasalitang Tunog","(katuturan at katangian ng wika) maraming naririnig na tunog sa paligid ngunit hindi lahat ng tunog na naririnig natin ay maituturing na wika sapagkat hindi nabubuo ang mga tunog na ito sa pamamagitan ng mga sangkap ng pagsasalita tulad ng labi, dila, ngipin ngalangala."],
+			["Pinili at isinaayos sa paraang arbitraryo","(katuturan at katangian ng wika)  ang tunog na sinasalita ay pinili para sa layunin ng mga gumagamit. Pinili at isinaayos ang mga tunog sa paraang pagkakasunduan ng pangkat ng mga taong gumagamit nito."],
+			["upang magamit sa komunikasyon","(katuturan at katangian ng wika) ang wika ay komunikasyon. Ang wika ay behikulo ng talastasan o komunikasyon ng dalawa o higit pang taong nag-uusap. Ginagamit nila ang wika upang maipahayag ang kanilang pangangailangan, damdamin sa pakikipag-ugnayan sa iba't ibang pagkakataon."],
+			["kaugnay ng kultura","(katuturan at katangian ng wika) May sapat na wika o mga salitang pantawag sa bawat gawain, pamumuhay ng tao."],
+			["may antas ang wika","(katuturan at katangian ng wika) dito malalaman kung anung uri ng tao siya at kung saang lipunan siya nabibilang."],
+			["natatangi","(katuturan at katangian ng wika) bawat wika ay may sariling set ng mga makabuluhang tunog, mga unit panggramatika, at sariling sistema ng palabuuan ng mga salita at palaugnayan nito."],
+			["komunikasyon","(katuturan at katangian ng wika) ito ay behikulo ng pakikipagtalastasan ng dalawa o higit pang taong nag-uusap. Gamit ang wika upang ipahayag ang damdamin, ang iniisip, ang nadarama, at pangangailangan ng tao."],
+			["makapangyarihan","(katuturan at katangian ng wika) maaari itong maging kasangkapan ng pang-aalipin kung paano ginamit ng mga Amerikano ang wikang Ingles nang alipihin nila ang ating bansa."],
+			["Kagilagilalas","(katuturan at katangian ng wika) mabilis daw ang 'quicksand'"],
+			["may pulitika","(katuturan at katangian ng wika) wika ang gamit sa paglaganap ng mga konsepto. Sa dominasyon ng malalakas na bansa sa kanyang mga kolonyal; sa pag-iral at pagnanasang matuto ng Ingles bilang panngalawang lenggwahe; sa pagkuha ng boto, sa pamamagitan ng paggamit ng wika ng masa, sa paghubog ng mga kamalayang panlipunan at pampulitika."],
+			
+			//teoryang pangwika
+			["Bow-wow", "maaaring ang wika raw ng tao ay mula sa panggagaya sa mga tunog ng kalikasan."],
+			["Pooh-pooh", "unang natutong magsalita ang mga tao nang hindi sinasadya ay napabulalas sila bunga ng mga masisidhing damdaming tulad ng sakit, tuwa, sarap, kalungkutan, takot, pagkabigla at iba pa."],
+			["Yo-he-ho", "ang tao ay natutuong magsalita bunga diumano ng kanyang pwersang pisikal."],
+			["Ta-ra-ra-boom-de-ay", "ang wika raw ng tao ay nag-ugat sa mga tunog ng kanilang nililikha sa mga ritwal na ito na kalauna'y nagpapabagu-bago at nilapatan ng iba't ibang kahulugan."],
+			["Ta-ta", "ang kumpas o galaw ng kamay ng tao na kanyang ginagagawa sa bawat partikular na okasyon ay ginaya ng dila at naging sanhi ng pagkatuto ng taong lumikha ng tunog at kalauna'y nagsalita."],
+			["Ding-dong", "kahawig ng teoryang bow-wow, nagkaroon daw ng wika ang tao sa pamamagitan ng mga tunog na nalilikha ng mga bagay-bagay sa paligid."],
+			["Mama", "nagmula ang wika sa mga pinakamadadaling pantig ng pinakamahahalagang bagay."],
+			["Sing-song", "ang wika ay nagmula sa paglalaro, pagtawa, pagbulong sa sarili, panliligaw at iba pang mga bulalas-emosyonal. Ang mga unang salita ay sadyang mahahaba at musikal."],
+			["Hey you!", "Hawig nito ang teoryang pooh-pooh. nagmula ang wika sa mga tunog na nagbabadya ng pagkakakilanlan at pagkakabilang."],
+			["Coo Coo", "ang wika ay nagmula sa mga tunog na nalilikha ng mga sanggol."],
+			["Yum Yum", "katulad ng teoryang ta-ta, pinag-uugnay ng teoryang ito ang tunog at kilos ng pangangatawan."],
+			["Babble Lucky", "ang wika raw ay nagmula sa mga walang kahulugang bulalas ng tao. Sa pagbubulalas ng tao, sinuswerte lamang daw siya nang ang mga hindi sinasadya at walang kabuluhang tunog na kanyang nilikha ay naiugnay sa mga bagay-bagay sa paligid na kalaunan ay naging pangalan ng mga iyon."],
+			["Hocus Pocus", "ang wika ay tulad ng pinaggalingan ng mga mahikal o relihiyosong aspeto ng pamumuhay ng ating mga ninuno."],
+			["Eureka!", "sadyang inimbento ang wika ayon sa teoryang ito. maaari raw na ang ating mga ninuno ay may ideya ng pagtatakda ng mga arbitraryong tunog upang ipakahulugan sa mga tiyak na bagay. Nang ang ideyang iyon ay nalikha, mabilis na iyong kumalat sa iba pang tao at naging kalakaran sa pagpapangalan ng mga bagay-bagay."],
+			
+			//wika, dayalek at iba pa
+			["sosyolinggwistik","ipinaliwanag ng teoryang ito na pinagbabatayan ng ideya ng pagiging heterogeneous ng wika."],
+			["heograpiko at sosyal","ito ay ang dalawang dimensyon ng baryabilidad ng wika."],
+			["Dayalek","ito ang barayti ng wikang naliliha ng dimensyong heograpiko. Tinatawag din itong wikain sa ibang aklat. Ito ang wikang ginagamit sa isang partikular na rehiyon, lalawigan o pook, malaki man o maliit."],
+			["400","higit sa ____ ang dayalek na ginagamit sa kapuluan ng ating bansa."],
+			["Sosyolek","ito ang barayti ng wika na nabubuo batay sa dimensyong sosyal."],
+			["Jargon","ang ____ ang mga tanging bokabularyo sa isang partikular ng pangkat na gawain."],
+			["idyolek","bawat isa kasi ay may kani-kaniyang paraan ng paggamit ng wika. Tinatawag itong ____."],
+			
+			//rehistro ng wika
+			["Rehistro","ginagamit ito sa pagtutukoy sa mga barayti ng wika ayon sa gumagamit"],
+			["Dayalekto","ang ___ ng isang tao ay nagpapakilala kung sino siya"],
+			["Register","ang ___ ay nagpapakita kung ano ang kaniyang ginagawa"],
+			["Field","isa sa mga dimensyon ng rehistro ng wika. Ang layunin at paksa ayon sa larangan sangkot ng komunikasyon. (e.g. mga larangan: teknolohiya, etc."],
+			["Mode","isa sa mga dimensyon ng rehistro ng wika. tungkol ito sa paraan kung paano isinasagawa ang komunikasyon pasasalita o pagsulat."],
+			["Tenor","isa sa mga dimensyon ng rehistro ng wika. relasyon, nangangahulugan para kanino ito."],
+			
+			//antas ng wika
+			["Pormal","ito ay ketegorya ng antas ng wika na ang mga salitang istandard dahil kinikilala, tinatanggap at ginagamit ng higit na nakararami lalo ng mga nakapag-aral ng wika."],
+			["Impormal","ito ay kategorya ng antas ng wika na ang mga salitang karaniwan, palasak, pang-araw araw na madalas nating gamitin sa pakikipag-usap at pakikipagtalastasan sa mga kakilala at kaibigan."],
+			["Pambansa","nasasama sa kategoryang pormal at ito ang mga salitang karaniwang ginagamit sa mga aklat pangwika/pambalarila sa lahat ng mga paaralan. Ito rin ang wikang kadalasang ginagamit ng pamahalaan at itinuturo sa mga paaralan."],
+			["Pampanitikan o panretorika","nasasama sa kategoryang pormal at ito ang mga salitang ginagamit ng mga manunulat sa kanilang mga akdang pampanitikan. Ito ang mga salitang karaniwang matatayog, makulat at masining."],
+			["Lalawiganin","uri ng impormal at ito ang mga bokabularyong dayalektal. Gamitin ang mga ito sa mga partikular na pook o lalawigan lamang."],
+			["Kolokyal","uri ng impormal at ito'y mga pang-araw-araw na salita na ginagamit sa mga pagkakataong impormal. Maaaring may kagaspangan ng kaunti ang mga salitang ito ngunit maaari rin itong maging repindado ayon sa kung sino ang nagsasalita nito. e.g. Pa'no (paano)"],
+			["Balbal","uri ng impormal at ito ang pinakadinamiko"]
+		);
+				
+		//shuffle 'questions'
+		function shuffleQuestions()
+		{
+			var n, temp;
+			for (var i = 0; i < questions.length; i++)
+			{
+				n = Math.floor(Math.random() * (i++));
+
+				temp = questions[i];
+				questions[i] = questions[n];
+				questions[n] = temp;
+			}
+		}
+		
+		//know if you are taking the quiz
+		var youAreTakingTheQuiz = false;
+		var questionCounter = 0; //identifies kung pang ilang item na
+		
+		//scorer
+		var score = 0;
+		
+		
+		//create checkmark icon
+		var checkmark = document.createElement("span");
+		checkmark.innerHTML = "&#x2714";
+		checkmark.setAttribute("id", "_2714");
+		function checkIt() //animate the check mark
+		{
+			checkmark.style.width = "50px";
+		}
+		
+		//flash card counter
+		var counter = document.createElement("p");
+			counter.style.textAlign = "right";
+			counter.style.fontFamily = "Garamond";
+			
+		//answer container
+		var answerContainer = document.getElementById("answer-container");
+			
+		//open flash card
+		var term = document.createElement("h1");
+		function openQ()
+		{
+			var parent = document.getElementById("flash-card");
+			parent.innerHTML = ""; // clean
+			
+			//counter			
+			counter.innerHTML = (questionCounter+1) + " of " + questions.length;
+			
+			// term
+			term.innerHTML = ""; // clean
+			if (!youAreTakingTheQuiz)
+			term.appendChild(document.createTextNode(questions[questionCounter][0]));
+			else
+			term.innerHTML = "&#9786;";
+			
+			// definition
+			var definition = document.createElement("p");
+			definition.appendChild(document.createTextNode(questions[questionCounter][1]));
+			
+			document.getElementById("flash-card-container").insertBefore(counter, parent);
+			parent.appendChild(term);
+			parent.appendChild(definition);
+		} openQ();
+		
+		// REMINDERS
+		var hint = document.createElement("p"); hint.setAttribute("id","hint");
+		var hintSpan = document.createElement("span"); hintSpan.innerHTML = "Review! ";
+		hint.appendChild(hintSpan);
+		hint.appendChild(document.createTextNode("Use left and right arrow keys to move between flash cards."));
+		
+		function showReminder()
+		{
+			hint.style.opacity = "1";
+			answerContainer.appendChild(hint);
+			
+		} showReminder();
+		
+		function hideReminder() //remove the 'Use arrow keys' hint
+		{
+			setTimeout(function(){hint.style.opacity = "0";},7*1000);
+		} hideReminder();
+		
+		//arrow keys
+		window.onkeydown = aK; 
+		function aK(e) 
+		{
+			if (!youAreTakingTheQuiz)
+			{
+				if(e.keyCode==37) //left
+				{
+					if(!youAreTakingTheQuiz)
+					{
+						questionCounter--;
+						if (questionCounter<0) questionCounter = questions.length - 1;
+						
+						openQ();
+					}
+				}
+				
+				else if(e.keyCode==39) //right
+				{
+					questionCounter++;
+					if (questionCounter>(questions.length-1)) questionCounter = 0;
+					
+					openQ();
+				}
+			}
+		}
+		
+		// answer ui textbox
+		var aut; //the textbox for answers
+		function createTextBox()
+		{
+			aut = document.createElement("input");
+			aut.setAttribute("type","text");
+			aut.setAttribute("autofocus", true);
+		} createTextBox();
+		
+		aut.onkeypress = sa; function sa(e) {if(waitingForYourAnswer && e.keyCode==13)submitAnswer();} //enter event for textbox
+		
+		
+		
+		//show the start quiz link
+		var sqLink = document.createElement("a");
+		sqLink.innerHTML = "Start Quiz";
+		sqLink.setAttribute("href", "javascript:void(0);");
+		
+		function showSQLink()
+		{
+			if (!youAreTakingTheQuiz)
+			{
+				answerContainer.appendChild(sqLink);
+			}
+		} showSQLink();
+		
+		//start quiz!!!
+		sqLink.onclick = function () 
+		{
+			youAreTakingTheQuiz = true;
+			waitingForYourAnswer = true;
+			
+			questionCounter = 0;
+			shuffleQuestions();
+			openQ();
+			
+			answerContainer.removeChild(sqLink);
+			answerContainer.appendChild(aut);
+			
+			aut.select(); //selects the textbox
+			
+			//remove the hint 'Use arrows....' instantly
+			answerContainer.removeChild(hint);
+		};
+		
+		//submit the answer
+		function submitAnswer()
+		{
+			waitingForYourAnswer = false;
+			var yourAnswer = aut.value.toLowerCase();
+			var correctAnswer = questions[questionCounter][0];			
+			
+			if (yourAnswer == correctAnswer.toLowerCase())
+			{
+				//add score!!
+				score++;
+				
+				
+				//displays the correctAnswer
+				term.innerHTML = correctAnswer;
+				
+				//add the checkmark icon
+				term.appendChild(checkmark);
+				
+				//check the answer!!
+				setTimeout("checkIt()", 500);
+				
+				//remove checkmark icon
+				setTimeout(function(){term.removeChild(checkmark)}, 1500);
+				
+				//reset checkmark
+				setTimeout(function(){
+					checkmark.style.width = "0";
+				},1500);
+					
+				//set next question
+				questionCounter++;
+				
+				
+			
+				//end of quiz of no questions's left
+				if (questionCounter >= questions.length) setTimeout("endQuiz()", 1500);
+				else //next question
+				setTimeout(function(){
+					openQ();
+					waitingForYourAnswer = true;
+				},2000);
+				
+				
+			}
+			
+			else
+			{
+				
+				//display sadFace
+				term.innerHTML = "&#9785;";
+				term.style.color = "red";
+				term.style.fontWeight = "bold";
+				
+				//show correct answer (in faded color)
+				setTimeout(function(){
+					term.style.color = "#aaa";
+					term.style.fontWeight = "normal";
+					term.innerHTML = correctAnswer;
+				}, 1500);
+				
+				//set next question
+				questionCounter++;		
+			
+			
+				//end of quiz of no questions's left
+				if (questionCounter >= questions.length) setTimeout("endQuiz()", 2500);
+				else //next question
+				setTimeout(function(){
+					term.style.color = "#000"; //reset color
+					openQ();
+					waitingForYourAnswer = true;
+				},3000);
+			}
+						
+			aut.value = "";
+		}
+		
+		//end the quiz
+		function endQuiz()
+		{
+			var totalScore = Math.floor((score / questions.length) * 100);
+			
+			//passing score is 70 and above
+			var message;
+			
+			if (totalScore == 100) message = "CONGRATULATIONS! <br> You got a perfect score! You are awesome!";
+			else if (totalScore >= 90) message = "You're good! :-)";
+			else if (totalScore >= 70) message = "Keep it up, my friend!";
+			else message = "Sorry my friend.. I think you need to study more.";
+			
+			
+			
+			answerContainer.removeChild(aut); //removes the textbox
+			
+			//create message as result of the quiz
+			overlayContent.innerHTML = "<b style='font-family: Garamond; font-size: 50px;'>" + totalScore + "</b><a style='font-family:monospace; font-size: 50px;'>%</a> <br>" + message + "<p style='font-size: 12px; margin-top: 100px;'>Click anywhere to continue...</p>";
+			showOverlay();
+			
+			//slide to the left + resets
+			overlay.onclick = ulit;
+			
+		}
+		
+		// resets
+		function ulit()
+		{
+			overlay.style.left = "-999em";
+			overlayContent.innerHTML = "";
+			
+			showReminder();
+			hideReminder();
+			
+			youAreTakingTheQuiz = false;
+			
+			showSQLink(); //show again the start quiz button
+			score = 0; // restart the score
+			questionCounter = 0; // go back to question # 1
+			openQ(); //resets the flash cards
+			term.style.color = "#000"; //resets the font color of the terms to black
+		
+			//hide overlay
+			setTimeout(function(){
+				overlay.style.left = "auto";
+				hideOverlay();
+			}, 1000);
+		}
+		
+		//overlay
+		var overlay = document.createElement("div");
+		overlay.setAttribute("id","overlay");
+		
+		//overlay-content
+		var overlayContent = document.createElement("div");
+		overlayContent.setAttribute("id","overlay-content");
+		
+		overlay.appendChild(overlayContent);
+		
+		//add overlay
+		function showOverlay()
+		{
+			document.body.appendChild(overlay);
+		}
+		
+		function hideOverlay()
+		{
+			document.body.removeChild(overlay);
+		}
+		
+	</script>
+	<script>
+		window.oncontextmenu=fwjd;function fwjd(e){if(e.button==2)return false;}
+	</script>
+	
+	</body>
+</html>
